@@ -6,14 +6,16 @@ import Footer from '../../components/Footer.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import TagsBar from '../../components/TagsBar.astro';
 
+// שליפת כל הפוסטים ומיון מהחדש לישן
 const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="he" dir="rtl">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
@@ -90,10 +92,14 @@ const posts = (await getCollection('blog')).sort(
 		<Header />
 		<main>
 			<section>
+				{/* נספק ל-TagsBar את התגית מתוך ה-URL אם היא קיימת כדי שיצבע את הכפתור הנכון */}
+				<TagsBar activeTag={typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('tag') : undefined} />
+
 				<ul>
 					{
 						posts.map((post) => (
-							<li>
+							/* הוספנו מאפיין data-tags שמכיל את התגיות של הפוסט כטקסט */
+							<li data-tags={post.data.tags ? post.data.tags.join(',') : ''}>
 								<a href={`./${post.id}/`}>
 									{post.data.heroImage && (
 										<Image width={720} height={360} src={post.data.heroImage} alt="" />
@@ -110,5 +116,46 @@ const posts = (await getCollection('blog')).sort(
 			</section>
 		</main>
 		<Footer />
+
+		{/* קוד ה-JavaScript שמבצע את הסינון הדינמי והצביעה של הכפתורים על המסך */}
+		<script>
+			function filterPosts() {
+				const urlParams = new URLSearchParams(window.location.search);
+				const activeTag = urlParams.get('tag');
+				
+				// 1. סינון הפוסטים ויזואלית
+				const postElements = document.querySelectorAll('main ul li');
+				postElements.forEach((el) => {
+					const tagsAttr = el.getAttribute('data-tags') || '';
+					const postTags = tagsAttr.split(',').filter(Boolean);
+					
+					if (!activeTag || postTags.includes(activeTag)) {
+						(el as HTMLElement).style.display = 'block';
+					} else {
+						(el as HTMLElement).style.display = 'none';
+					}
+				});
+
+				// 2. עדכון צביעת הכפתורים (Active State)
+				const tagButtons = document.querySelectorAll('.tag-button');
+				tagButtons.forEach((btn) => {
+					const href = btn.getAttribute('href') || '';
+					
+					if (!activeTag && (href === '.' || href === '/blog/')) {
+						btn.classList.add('active');
+					} else if (activeTag && href.includes(`tag=${encodeURIComponent(activeTag)}`)) {
+						btn.classList.add('active');
+					} else {
+						btn.classList.remove('active');
+					}
+				});
+			}
+
+			// הפעלת הסינון כשהדף נטען
+			filterPosts();
+			
+			// האזנה לאירועים למקרה שהניווט משתנה ללא רענון מלא (תמיכה ב-Astro View Transitions)
+			document.addEventListener('astro:after-swap', filterPosts);
+		</script>
 	</body>
 </html>

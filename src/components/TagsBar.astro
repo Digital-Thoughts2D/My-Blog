@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const uniqueTags = [...new Set(allPosts.map((post) => post.data.tags || []).flat())].filter(Boolean);
+
+const { activeTag } = Astro.props;
+---
+
+<div class="tags-container" dir="rtl">
+  <a href="." class={`tag-button ${!activeTag ? 'active' : ''}`}>
+    הכל ({allPosts.length})
+  </a>
+
+  {uniqueTags.map((tag) => {
+    const count = allPosts.filter(post => post.data.tags?.includes(tag)).length;
+    
+    return (
+      <a 
+        href={`?tag=${encodeURIComponent(tag)}`} 
+        class={`tag-button ${activeTag === tag ? 'active' : ''}`}
+      >
+        {tag} <span class="tag-count">({count})</span>
+      </a>
+    );
+  })}
+</div>
+
+<style>
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0 40px 0;
+  }
+
+  .tag-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    border-radius: 20px;
+    background-color: #f3f4f6;
+    color: #374151;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid #e5e7eb;
+  }
+
+  .tag-button:hover {
+    background-color: #e5e7eb;
+    transform: translateY(-1px);
+  }
+
+  .tag-button.active {
+    background-color: #000000;
+    color: #ffffff;
+    border-color: #000000;
+  }
+
+  .tag-count {
+    margin-right: 5px;
+    font-size: 0.8rem;
+    opacity: 0.7;
+  }
+</style>
