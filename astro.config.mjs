@@ -8,6 +8,10 @@ import { defineConfig, fontProviders } from 'astro/config';
 export default defineConfig({
 	site: 'https://neonhawk2000.github.io',
 	base: '/My-Blog/',
+	build: {
+    assets: 'assets',
+  	},
+	trailingSlash: 'always',
 	integrations: [mdx(), sitemap()],
 	fonts: [
 		{
