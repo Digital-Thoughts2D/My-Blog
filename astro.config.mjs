@@ -6,7 +6,7 @@ import { defineConfig, fontProviders } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://neonhawk2000.github.io',
+	site: 'https://digital-thoughts2d.github.io',
 	base: '/My-Blog/',
 	build: {
     assets: 'assets',
