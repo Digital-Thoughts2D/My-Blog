@@ -21,7 +21,7 @@ const posts = (await getCollection('blog')).sort(
 <style>
 	main {
 		width: 100%;
-		max-width: 1140px; 
+		max-width: 920px; /* צמצמנו מעט את הרווח המקסימלי כדי שרשימה תיראה הדוקה ויפה */
 		margin: 0 auto;
 		padding: 2rem 1.5rem;
 		box-sizing: border-box;
@@ -31,91 +31,91 @@ const posts = (await getCollection('blog')).sort(
 		width: 100%;
 	}
 
-	/* רשימת הפוסטים - פריסה אופקית שמתפצלת ל-2 טורים */
+	/* רשימת הפוסטים - מבנה אנכי נקי */
 	ul {
 		display: flex;
-		flex-wrap: wrap;
-		gap: 2.5rem;
+		flex-direction: column;
+		gap: 2rem;
 		list-style-type: none;
 		margin: 2rem 0 0 0;
 		padding: 0;
 		width: 100%;
 	}
 
-	/* כל פוסט תופס בדיוק חצי מהרוחב פחות חצי מהרווח (gap) */
 	ul li {
-		width: calc(50% - 1.25rem);
-		box-sizing: border-box;
-	}
-
-	/* ביטול ההגדרה של התבנית המקורית שהפכה את הפוסט הראשון ל-100% */
-	ul li:first-child {
-		width: calc(50% - 1.25rem) !important;
-		margin-bottom: 0 !important;
-		text-align: right !important;
-	}
-	
-	ul li:first-child .title {
-		font-size: 1.35rem !important;
-	}
-
-	ul li a {
-		display: flex;
-		flex-direction: column;
-		text-decoration: none;
-	}
-
-	/* מיכל התמונה השומר על פרופורציות קבועות */
-	.image-wrapper {
 		width: 100%;
-		aspect-ratio: 16 / 10;
-		overflow: hidden;
-		border-radius: 24px;
-		margin-bottom: 1.2rem;
-		background-color: rgb(var(--gray-light));
+		box-sizing: border-box;
+		border-bottom: 1px solid rgba(var(--black), 0.05); /* קו מפריד עדין בין המחשבות */
+		padding-bottom: 2rem;
 	}
 
-	ul li img {
-		width: 100% !important;
-		height: 100% !important;
+	ul li:last-child {
+		border-bottom: none; /* ביטול הקו לפוסט האחרון */
+	}
+
+	/* פריסת הפוסט - תמונה מימין (או משמאל ב-RTL) וטקסט לצדה */
+	.post-item a {
+		display: flex;
+		gap: 2rem;
+		text-decoration: none;
+		align-items: center;
+	}
+
+	.post-thumb {
+		width: 240px;
+		height: 150px;
 		object-fit: cover;
-		transition: transform 0.5s ease;
-		border-radius: 24px;
+		border-radius: 16px;
+		box-shadow: var(--box-shadow);
+		transition: transform 0.3s ease;
+	}
+
+	.post-details {
+		flex: 1; /* נותן לטקסט לתפוס את כל השטח שנשאר */
 	}
 
 	.title {
 		margin: 0 0 0.4rem 0;
 		color: rgb(var(--black));
-		font-size: 1.35rem;
+		font-size: 1.4rem;
 		font-weight: 700;
 		line-height: 1.3;
+		transition: color 0.2s ease;
 	}
 
 	.date {
-		margin: 0;
+		margin: 0 0 0.5rem 0;
 		color: rgb(var(--gray));
 		font-size: 0.9rem;
 	}
 
+	.description {
+		margin: 0;
+		color: rgb(var(--gray-dark));
+		font-size: 1rem;
+		line-height: 1.5;
+	}
+
 	/* אפקטים במעבר עכבר */
 	ul li a:hover .title {
-		color: var(--accent);
+		color: rgb(var(--black));
+		text-decoration: underline; /* או צבע האפקט המועדף עליך */
 	}
 
-	ul li a:hover img {
-		transform: scale(1.03);
+	ul li a:hover .post-thumb {
+		transform: scale(1.02);
 	}
 
-	/* מובייל - מעבר לטור אחד מלא */
-	@media (max-width: 768px) {
-		ul {
-			gap: 2rem;
+	/* התאמה מלאה למובייל - התמונה עולה למעלה והטקסט מתחתיה */
+	@media (max-width: 720px) {
+		.post-item a {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 1.2rem;
 		}
-		ul li, ul li:first-child {
-			width: 100% !important;
-		}
-		.title {
-			font-size: 1.2rem;
+		.post-thumb {
+			width: 100%;
+			height: 200px;
 		}
 	}
 </style>
@@ -126,27 +126,30 @@ const posts = (await getCollection('blog')).sort(
 			<section>
 			<h1>המחשבות שלי</h1>
 			<TagsBar activeTag={typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('tag') : undefined} />
-
+<div class="featured-section">
+    <h2 class="section-title">קריאה נבחרת</h2>
 <ul>
-	{
-		posts.map((post) => (
-			/* שומרים על ה-data-tags בשביל סקריפט הסינון שכבר בנית */
-			<li data-tags={post.data.tags ? post.data.tags.join(',') : ''}>
-				<a href={`./${post.id}/`}>
-					{post.data.heroImage && (
-						<div class="image-wrapper">
-							<Image width={720} height={450} src={post.data.heroImage} alt="" />
-						</div>
-					)}
-					<h4 class="title">{post.data.title}</h4>
-					<p class="date">
-						<FormattedDate date={post.data.pubDate} />
-					</p>
-				</a>
-			</li>
-		))
-	}
+    {
+        posts.map((post) => (
+            /* התיקון הקריטי: הוספת המאפיין data-tags שממיר את מערך התגיות לטקסט מופרד בפסיקים */
+            <li class="post-item" data-tags={post.data.tags ? post.data.tags.join(',') : ''}>
+                <a href={import.meta.env.BASE_URL + 'blog/' + post.id + '/'}>
+                    {post.data.heroImage && (
+                        <Image width={360} height={180} src={post.data.heroImage} alt="" class="post-thumb" />
+                    )}
+                    <div class="post-details">
+                        <h4 class="title">{post.data.title}</h4>
+                        <p class="date">
+                            <FormattedDate date={post.data.pubDate} />
+                        </p>
+                        <p class="description">{post.data.description}</p>
+                    </div>
+                </a>
+            </li>
+        ))
+    }
 </ul>
+</div>
 			</section>
 		</main>
 		<Footer />

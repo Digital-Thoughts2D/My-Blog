@@ -6,7 +6,10 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 
-type Props = CollectionEntry<'blog'>['data'];
+type Props = Omit<CollectionEntry<'blog'>['data'], 'pubDate' | 'heroImage'> & {
+	pubDate?: Date;
+	heroImage?: any;
+};
 
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 ---
@@ -15,19 +18,15 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
-main {
-				/* calc(100% - 2em) משאיר קצת רווח מהצדדים במובייל */
+			main {
 				width: calc(100% - 2em);
 				max-width: 100%;
-				/* ממרכז את ה-main כולו במסך (במקום margin: 0 שהיה מקודם) */
 				margin: 0 auto;
-				/* מוסיף פדינג פנימי קטן לביטחון */
 				padding: 0 1em; 
 				box-sizing: border-box;
 			}
 			.hero-image {
 				width: 100%;
-				/* מוודא שגם אזור התמונה ממורכז לחלוטין */
 				margin: 0 auto 2em auto; 
 			}
 			.hero-image img {
@@ -35,8 +34,6 @@ main {
 				margin: 0 auto;
 				border-radius: 12px;
 				box-shadow: var(--box-shadow);
-				
-				/* התיקון הקריטי למובייל: */
 				width: 100%;        
 				max-width: 100%;    
 				height: auto;       
@@ -77,7 +74,7 @@ main {
 				<div class="prose">
 					<div class="title">
 						<div class="date">
-							<FormattedDate date={pubDate} />
+							{pubDate && <FormattedDate date={pubDate} />} 
 							{
 								updatedDate && (
 									<div class="last-updated-on">
@@ -89,7 +86,7 @@ main {
 						<h1>{title}</h1>
 						<hr />
 					</div>
-					<slot />
+					<slot /> 
 				</div>
 			</article>
 		</main>
