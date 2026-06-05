@@ -4,57 +4,148 @@ import HeaderLink from './HeaderLink.astro';
 ---
 
 <header>
-<nav>
-    <h2><a href={import.meta.env.BASE_URL}>{SITE_TITLE}</a></h2>
-    
-		<div class="internal-links">
-			<HeaderLink href={import.meta.env.BASE_URL}>Home</HeaderLink>
-			<HeaderLink href={import.meta.env.BASE_URL + 'blog/'}>Blog</HeaderLink>
-			<HeaderLink href={import.meta.env.BASE_URL + 'about/'}>About</HeaderLink>
-		</div>
-    
-    <div class="social-links">
-        </div>
-</nav>
-</header>
-<style>
-	header {
-		margin: 0;
-		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1em;
-	}
+	<nav>
+		<h2 class="logo">
+			<a href={import.meta.env.BASE_URL}>{SITE_TITLE}</a>
+		</h2>
+		
+		<div class="nav-left">
+			<div class="internal-links">
+				<HeaderLink href={import.meta.env.BASE_URL}>בית</HeaderLink>
+				<HeaderLink href={import.meta.env.BASE_URL + 'blog/'}>בלוג</HeaderLink>
+				<HeaderLink href={import.meta.env.BASE_URL + 'about/'}>אודות</HeaderLink>
+			</div>
 
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
-	}
+			<button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+				<svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M17.66 17.66l1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M6.34 17.66l-1.41 1.41"></path><path d="M19.07 4.93l-1.41 1.41"></path></svg>
+				<svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+			</button>
+		</div>
+	</nav>
+</header>
+
+<style>
+header {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	margin: 0;
+	padding: 1.2rem 0;
+	
+	background-color: rgba(248, 246, 242, 0.75); 
+	
+	/* אפקט הטשטוש המודרני מאחורי הבר השקוף */
+	backdrop-filter: blur(12px); 
+	-webkit-backdrop-filter: blur(12px);
+	
+	border-bottom: 1px solid rgba(var(--black), 0.05); 
+	
+	transition: background-color 0.3s ease;
+}
+
+:global(html.dark) header {
+	background-color: rgba(18, 18, 18, 0.75);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
 	nav {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		width: 1200px;
+		max-width: 90%;
+		margin: 0 auto;
 	}
-	nav a {
-		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
+
+	/* עיצוב שם האתר */
+	.logo {
+		margin: 0;
+		font-size: 1.35rem;
+		font-weight: 700;
+	}
+
+	.logo a {
+		color: rgb(var(--black));
 		text-decoration: none;
 	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
-	}
-	.social-links,
-	.social-links a {
+
+	.nav-left {
 		display: flex;
+		align-items: center;
+		gap: 1.5rem;
 	}
+
+	.internal-links {
+		display: flex;
+		gap: 1.5rem;
+	}
+
+	/* עיצוב הקישורים בתוך ה-Navbar */
+	.internal-links :global(a) {
+		padding: 0.5rem 0;
+		color: rgb(var(--gray));
+		text-decoration: none;
+		font-size: 0.95rem;
+		border-bottom: none; /* הסרת הקו התחתון הדיפולטיבי */
+		transition: color 0.2s ease;
+	}
+
+	/* קישור פעיל (Active State) - הופך לצבע הטקסט הכהה ולא לצבע הכחול/מנטה */
+	.internal-links :global(a.active) {
+		color: rgb(var(--black));
+		font-weight: 500;
+	}
+
+	.internal-links :global(a:hover) {
+		color: rgb(var(--black));
+	}
+
+	/* עיצוב כפתור שינוי המצב הכהה */
+	.theme-toggle {
+		background: none;
+		border: none;
+		cursor: pointer;
+		padding: 0.4rem;
+		color: rgb(var(--gray));
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: color 0.2s ease, background-color 0.2s ease;
+	}
+
+	.theme-toggle:hover {
+		color: rgb(var(--black));
+		background-color: rgb(var(--gray-light));
+	}
+
+	/* שליטה בהצגת האייקונים (בהתאם למצב האתר) */
+	.sun-icon { display: none; }
+	.moon-icon { display: block; }
+
+	:global(html.dark) .sun-icon { display: block; }
+	:global(html.dark) .moon-icon { display: none; }
+
 	@media (max-width: 720px) {
-		.social-links {
-			display: none;
+		nav {
+			flex-direction: column;
+			gap: 1rem;
 		}
 	}
 </style>
+
+<script>
+	// סקריפט בסיסי להפעלת כפתור ה-Dark Mode
+	const toggleBtn = document.getElementById('theme-toggle');
+	
+	// בדיקת העדפה קודמת של המשתמש
+	if (localStorage.getItem('theme') === 'dark' || 
+		(!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+		document.documentElement.classList.add('dark');
+	}
+
+	toggleBtn?.addEventListener('click', () => {
+		const isDark = document.documentElement.classList.toggle('dark');
+		localStorage.setItem('theme', isDark ? 'dark' : 'light');
+	});
+</script>

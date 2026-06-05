@@ -1,49 +1,262 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import FormattedDate from "../components/FormattedDate.astro";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+
+const featuredPosts = (await getCollection("blog"))
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 2);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="he" dir="rtl">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+
+		<style>
+			main {
+				width: 100%;
+				max-width: 800px;
+				margin: 0 auto;
+				padding: 4rem 1.5rem;
+				box-sizing: border-box;
+			}
+
+			h1 {
+				font-size: 2.5rem;
+				font-weight: 800;
+				color: rgb(var(--black));
+				margin-bottom: 2rem;
+				letter-spacing: -0.02em;
+				text-align: right;
+			}
+
+			p {
+				font-size: 1.125rem;
+				line-height: 1.75;
+				color: rgb(var(--gray-dark));
+				margin-bottom: 1.75rem;
+				text-align: justify;
+			}
+
+			
+			.animation-container-wrapper {
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: flex-end;
+				margin: 0 auto;
+				height: 150px; 
+				overflow: hidden;
+			}
+
+			#lottie-animation {
+				width: 400px;  
+				height: 400px; 
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.featured-section {
+				border-top: 1px solid rgba(var(--black), 0.08);
+				padding-top: 3rem;
+			}
+
+			.section-title {
+				font-size: 1.75rem;
+				font-weight: 800;
+				color: rgb(var(--black));
+				margin-bottom: 2rem;
+			}
+
+			.posts-grid {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: 2.5rem;
+				list-style-type: none;
+				padding: 0;
+				margin: 0;
+			}
+
+			.post-card a {
+				display: flex;
+				flex-direction: column;
+				text-decoration: none;
+			}
+
+			.image-wrapper {
+				width: 100%;
+				aspect-ratio: 16 / 10;
+				overflow: hidden;
+				border-radius: 20px;
+				margin-bottom: 1rem;
+				background-color: rgb(var(--gray-light));
+			}
+
+			.post-card img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				transition: transform 0.5s ease;
+			}
+
+			.post-title {
+				margin: 0 0 0.4rem 0;
+				color: rgb(var(--black));
+				font-size: 1.25rem;
+				font-weight: 700;
+				line-height: 1.3;
+				transition: color 0.3s ease;
+			}
+
+			.post-date {
+				margin: 0;
+				color: rgb(var(--gray));
+				font-size: 0.85rem;
+			}
+
+			.post-card a:hover .post-title {
+				color: var(--accent);
+			}
+
+			.post-card a:hover img {
+				transform: scale(1.03);
+			}
+
+			@media (max-width: 768px) {
+				main {
+					padding: 2.5rem 1.25rem;
+				}
+				h1 {
+					font-size: 2rem;
+				}
+				p {
+					font-size: 1.05rem;
+				}
+				.posts-grid {
+					grid-template-columns: 1fr;
+					gap: 2rem;
+				}
+				.animation-container-wrapper {
+					height: 200px;
+				}
+				#lottie-animation {
+					width: 300px;
+					height: 300px;
+				}
+			}
+		</style>
 	</head>
+
 	<body>
 		<Header />
+
 		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
+			<h1>שלום לכל המבקרים</h1>
+
 			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
+				זה הבלוג שלי, הבלוג של ליזה. אני מתכוונת לשתף כאן את Mחשבות,
+				האמונות והתובנות שלי.
 			</p>
+
 			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
+				פתחתי את הבלוג הזה כי אני לא נוהגת לשתף אנשים במה שקורה איתי או
+				בדעות שלי.<br />
+				תמיד הייתי יותר "הטיפוס המקשיב". והאמת, אני שמחה להיות ככה וזה לא
+				משהו שהייתי רוצה להשתנות בו.<br />
+				זה לא שאני מפחדת להביע את עצמי מול אנשים או באינטרנט, אבל אתם יודעים,
+				כל פלטפורמה והנושא שלה. באתר שלי יש לי יד חופשית לדבר ולשתף את מה
+				שאני רוצה מתי שאני רוצה.
 			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
+
 			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
+				בלוג זה הפתרון המושלם לאנשים כמוני. אנשים שרוצים לחלוק את הידע
+				והמחשבות שלהם עם העולם אבל לא תמיד מוצאים דרך להתבטא או את
+				הטיימניג המתאים. למזלי, עשיתי תואר במדעי המחשב ולכן אני לא מפחדת
+				להתעסק בעניינים הטכניים כמו הקמת פלטפורמה משלי ותחזוק האתר, משהו
+				שלדעתי המון אנשים נמנעים ממנו בגלל הפחד להתעסק עם העניינים האלה.<br />
+				ביחד עם החוש היצירתי שלי אני מקבלת הנאה מהקמת אתר, העיצוב, התכנון
+				והכתיבה.<br />
+				לפחות משהו טוב יוצא לי מהתואר הזה.
 			</p>
+
 			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
+				אז קוראים לי ליזה, בת 25 נכון לכתיבת שורות אלו. מתמודדת עם
+				האתגרים הקלאסיים של ג'ן זי בעולמנו ובפרט במדינת ישראל. אני הולכת
+				לשתף בהתמודדות האישית שלי עם העולם הזה, שלפעמים מרגיש לי שהוא לא
+				בנוי בשבילי. אני אשפוך כאן את המחשבות האמיתיות שלי על הדף, בלי
+				שימוש בכלי בינה מלאכולית לכתיבת הבלוג, הטקסטים שתראו על המסך הם
+				אני הכי אותנטיים שיש. את השימוש הטכני שלי בכלי בינה מלאכותית
+				במסגרת הבלוג הזה אני מפרטת בלשונית
+				<a href={import.meta.env.BASE_URL + "about/"}>אודות</a> כאן באתר.
 			</p>
+			
+			<div class="animation-container-wrapper">
+				<div id="lottie-animation"></div>
+			</div>
+			
+			<div class="featured-section">
+				<h2 class="section-title">קריאה נבחרת</h2>
+
+				<ul class="posts-grid">
+					{
+						featuredPosts.map((post) => (
+							<li class="post-card">
+								<a href={`${import.meta.env.BASE_URL}blog/${post.id}/`}>
+									{post.data.heroImage && (
+										<div class="image-wrapper">
+											<Image
+												width={720}
+												height={450}
+												src={post.data.heroImage}
+												alt=""
+											/>
+										</div>
+									)}
+									<h3 class="post-title">{post.data.title}</h3>
+									<p class="post-date">
+										<FormattedDate date={post.data.pubDate} />
+									</p>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</div>
 		</main>
+
 		<Footer />
+
+		<script type="module">
+			import lottie from "https://cdn.skypack.dev/lottie-web";
+
+			function initAnimation() {
+				const container = document.getElementById("lottie-animation");
+
+				if (container) {
+					container.innerHTML = '';
+					
+					lottie.loadAnimation({
+						container: container,
+						renderer: "svg",
+						loop: true,
+						autoplay: true,
+						path: "public/animations/cat.json",
+						rendererSettings: {
+							preserveAspectRatio: "xMidYMid slice",
+							hideOnTransparentBlur: true
+						}
+					});
+				}
+			}
+
+			initAnimation();
+			document.addEventListener("astro:after-swap", initAnimation);
+		</script>
 	</body>
 </html>
