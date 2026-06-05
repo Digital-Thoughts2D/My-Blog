@@ -160,7 +160,7 @@ const featuredPosts = (await getCollection("blog"))
 			<h1>שלום לכל המבקרים</h1>
 
 			<p>
-				זה הבלוג שלי, הבלוג של ליזה. אני מתכוונת לשתף כאן את Mחשבות,
+				זה הבלוג שלי, הבלוג של ליזה. אני מתכוונת לשתף כאן את המחשבות,
 				האמונות והתובנות שלי.
 			</p>
 
@@ -170,7 +170,7 @@ const featuredPosts = (await getCollection("blog"))
 				תמיד הייתי יותר "הטיפוס המקשיב". והאמת, אני שמחה להיות ככה וזה לא
 				משהו שהייתי רוצה להשתנות בו.<br />
 				זה לא שאני מפחדת להביע את עצמי מול אנשים או באינטרנט, אבל אתם יודעים,
-				כל פלטפורמה והנושא שלה. באתר שלי יש לי יד חופשית לדבר ולשתף את מה
+				כל פלטפורמה והנושא שלה. באתר שלי יש לי ת החופש לדבר ולשתף את מה
 				שאני רוצה מתי שאני רוצה.
 			</p>
 
@@ -232,7 +232,7 @@ const featuredPosts = (await getCollection("blog"))
 
 		<Footer />
 
-		<script type="module">
+		<script type="module" define:vars={{ baseUrl: import.meta.env.BASE_URL }}>
 			import lottie from "https://cdn.skypack.dev/lottie-web";
 
 			function initAnimation() {
@@ -246,7 +246,7 @@ const featuredPosts = (await getCollection("blog"))
 						renderer: "svg",
 						loop: true,
 						autoplay: true,
-						path: "public/animations/cat.json",
+						path: `${baseUrl}animations/cat.json`, 
 						rendererSettings: {
 							preserveAspectRatio: "xMidYMid slice",
 							hideOnTransparentBlur: true
