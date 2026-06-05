@@ -15,13 +15,20 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
-			main {
+main {
+				/* calc(100% - 2em) משאיר קצת רווח מהצדדים במובייל */
 				width: calc(100% - 2em);
 				max-width: 100%;
-				margin: 0;
+				/* ממרכז את ה-main כולו במסך (במקום margin: 0 שהיה מקודם) */
+				margin: 0 auto;
+				/* מוסיף פדינג פנימי קטן לביטחון */
+				padding: 0 1em; 
+				box-sizing: border-box;
 			}
 			.hero-image {
 				width: 100%;
+				/* מוודא שגם אזור התמונה ממורכז לחלוטין */
+				margin: 0 auto 2em auto; 
 			}
 			.hero-image img {
 				display: block;
@@ -30,9 +37,9 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				box-shadow: var(--box-shadow);
 				
 				/* התיקון הקריטי למובייל: */
-				width: 100%;        /* תופס את כל רוחב הדיב העוטף */
-				max-width: 100%;    /* מונע מהתמונה לצאת מגבולות המסך */
-				height: auto;       /* שומר על פרופורציות התמונה */
+				width: 100%;        
+				max-width: 100%;    
+				height: auto;       
 			}
 			.prose {
 				width: 720px;
@@ -57,25 +64,6 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			.last-updated-on {
 				font-style: italic;
 			}
-			@media (max-width: 720px) {
-			/* מוסיף שוליים לכל אזור התוכן הראשי במובייל */
-			main {
-				padding: 0 1.5rem 2rem 1.5rem; /* 1.5rem מרווח מימין ומשמאל */
-			}
-
-			/* אם הטמפלייט שלך משתמש ב-class ספציפי לטקסט (נפוץ מאוד באסטרו) */
-			.prose {
-				width: 100%;
-				max-width: 100%;
-				padding: 0 1rem; /* מרווח ביטחון פנימי */
-			}
-
-			/* מוודא שגם כותרת הפוסט והתאריך לא נדבקים */
-			.title {
-				padding: 0 1rem;
-				margin-bottom: 1rem;
-			}
-		}
 		</style>
 	</head>
 
