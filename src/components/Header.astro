@@ -126,12 +126,35 @@ header {
 	:global(html.dark) .sun-icon { display: block; }
 	:global(html.dark) .moon-icon { display: none; }
 
-	@media (max-width: 720px) {
-		nav {
-			flex-direction: column;
-			gap: 1rem;
-		}
-	}
+@media (max-width: 720px) {
+    nav {
+        /* שומר על הכותרת והניווט באותה שורה */
+        flex-direction: row; 
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .nav-left {
+        /* מקטין מעט את המרווחים במובייל כדי שהכל ייכנס */
+        gap: 0.8rem; 
+    }
+
+    .internal-links {
+        /* מקטין את המרווח בין הקישורים (בית, בלוג, אודות) */
+        gap: 0.8rem; 
+    }
+
+    .internal-links :global(a) {
+        /* הקטנה קלה של הפונט במובייל למניעת גלישה */
+        font-size: 0.85rem; 
+    }
+    
+    .logo {
+        /* הקטנת שם הבלוג במובייל */
+        font-size: 1.1rem; 
+    }
+}
 </style>
 
 <script>
