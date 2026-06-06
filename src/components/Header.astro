@@ -53,11 +53,10 @@ header {
 		align-items: center;
 		justify-content: space-between;
 		width: 1200px;
-		max-width: 90%;
+		max-width: 80%;
 		margin: 0 auto;
 	}
 
-	/* עיצוב שם האתר */
 	.logo {
 		margin: 0;
 		font-size: 1.35rem;
@@ -72,7 +71,7 @@ header {
 	.nav-left {
 		display: flex;
 		align-items: center;
-		gap: 1.5rem;
+		gap: 5rem;
 	}
 
 	.internal-links {
@@ -85,7 +84,7 @@ header {
 		padding: 0.5rem 0;
 		color: rgb(var(--gray));
 		text-decoration: none;
-		font-size: 0.95rem;
+		font-size: 1.2rem;
 		border-bottom: none; /* הסרת הקו התחתון הדיפולטיבי */
 		transition: color 0.2s ease;
 	}
@@ -105,7 +104,7 @@ header {
 		background: none;
 		border: none;
 		cursor: pointer;
-		padding: 0.4rem;
+		padding: 0.5rem;
 		color: rgb(var(--gray));
 		border-radius: 50%;
 		display: flex;
@@ -118,8 +117,6 @@ header {
 		color: rgb(var(--black));
 		background-color: rgb(var(--gray-light));
 	}
-
-	/* שליטה בהצגת האייקונים (בהתאם למצב האתר) */
 	.sun-icon { display: none; }
 	.moon-icon { display: block; }
 
@@ -128,7 +125,6 @@ header {
 
 @media (max-width: 720px) {
     nav {
-        /* שומר על הכותרת והניווט באותה שורה */
         flex-direction: row; 
         justify-content: space-between;
         align-items: center;
