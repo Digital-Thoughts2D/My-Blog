@@ -17,7 +17,13 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 <html lang="he" dir="rtl">
 	<head>
 		<BaseHead title={title} description={description} />
-		<style>
+<style>
+			/* הבטחת התנהגות גלילה נכונה בשביל ה-Header הסטיקי */
+			:global(html), :global(body) {
+				scroll-behavior: smooth;
+				overflow-x: hidden; /* מונע גלישה אופקית מציקה במובייל */
+			}
+
 			main {
 				width: calc(100% - 2em);
 				max-width: 100%;
@@ -40,19 +46,44 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			}
 			.prose {
 				width: 720px;
-				max-width: calc(100% - 2em);
+				max-width: 100%; /* שינוי ל-100% כדי למנוע כיווץ יתר במובייל */
 				margin: auto;
-				padding: 1em;
+				padding: 1em 0; /* הורדת הפדינג הצידי כדי לנצל את המסך במובייל */
 				color: rgb(var(--gray-dark));
+				box-sizing: border-box;
 			}
+			
+			/* 🔥 התאמת תוכן ה-Markdown (ה-slot) למובייל */
+			.prose :global(img) {
+				max-width: 100%;
+				height: auto;
+				border-radius: 8px;
+				margin: 1.5rem auto;
+				display: block;
+			}
+
+			.prose :global(ul), .prose :global(ol) {
+				padding-right: 1.5rem; /* מבטיח שהנקודות/מספרים בעברית לא יחתכו מהמסך */
+				padding-left: 0;
+				margin-bottom: 1.5rem;
+			}
+
+			.prose :global(p) {
+				margin-bottom: 1.25rem;
+				line-height: 1.8;
+				font-size: 1.1rem;
+				text-align: justify;
+			}
+
 			.title {
 				margin-bottom: 1em;
 				padding: 1em 0;
 				text-align: center;
-				line-height: 1;
+				line-height: 1.3; /* הגדלת גובה השורה למקרה שהכותרת ארוכה ויורדת שורה */
 			}
 			.title h1 {
 				margin: 0 0 0.5em 0;
+				font-size: 2rem;
 			}
 			.date {
 				margin-bottom: 0.5em;
@@ -60,6 +91,19 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			}
 			.last-updated-on {
 				font-style: italic;
+			}
+
+			/* התאמות ספציפיות למסכים קטנים מאוד */
+			@media (max-width: 720px) {
+				.prose {
+					padding: 0.5rem 0;
+				}
+				.title h1 {
+					font-size: 1.6rem; /* הקטנת הכותרת הראשית בנייד כדי שלא תיחתך */
+				}
+				.prose :global(p) {
+					font-size: 1.05rem; /* פונט קצת יותר קריא לנייד */
+				}
 			}
 		</style>
 	</head>
