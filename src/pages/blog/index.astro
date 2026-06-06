@@ -1,16 +1,15 @@
 ---
-import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
-import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
-import TagsBar from '../../components/TagsBar.astro';
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import BaseHead from "../../components/BaseHead.astro";
+import Footer from "../../components/Footer.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+import Header from "../../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
+import TagsBar from "../../components/TagsBar.astro";
 
-// שליפת כל הפוסטים ומיון מהחדש לישן
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+const posts = (await getCollection("blog")).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 ---
 
@@ -18,180 +17,206 @@ const posts = (await getCollection('blog')).sort(
 <html lang="he" dir="rtl">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-<style>
-	main {
-		width: 100%;
-		max-width: 920px; /* צמצמנו מעט את הרווח המקסימלי כדי שרשימה תיראה הדוקה ויפה */
-		margin: 0 auto;
-		padding: 2rem 1.5rem;
-		box-sizing: border-box;
-	}
+		<style>
+			main {
+				width: 100%;
+				max-width: 920px;
+				margin: 0 auto;
+				padding: 2rem 1.5rem;
+				box-sizing: border-box;
+			}
 
-	section {
-		width: 100%;
-	}
+			section {
+				width: 100%;
+			}
 
-	/* רשימת הפוסטים - מבנה אנכי נקי */
-	ul {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-		list-style-type: none;
-		margin: 2rem 0 0 0;
-		padding: 0;
-		width: 100%;
-	}
+			ul {
+				display: flex;
+				flex-direction: column;
+				gap: 2rem;
+				list-style-type: none;
+				margin: 2rem 0 0 0;
+				padding: 0;
+				width: 100%;
+			}
 
-	ul li {
-		width: 100%;
-		box-sizing: border-box;
-		border-bottom: 1px solid rgba(var(--black), 0.05); /* קו מפריד עדין בין המחשבות */
-		padding-bottom: 2rem;
-	}
+			ul li {
+				width: 100%;
+				box-sizing: border-box;
+				border-bottom: 1px solid rgba(var(--black), 0.05);
+				padding-bottom: 2rem;
+			}
 
-	ul li:last-child {
-		border-bottom: none; /* ביטול הקו לפוסט האחרון */
-	}
+			ul li:last-child {
+				border-bottom: none;
+			}
 
-	/* פריסת הפוסט - תמונה מימין (או משמאל ב-RTL) וטקסט לצדה */
-	.post-item a {
-		display: flex;
-		gap: 2rem;
-		text-decoration: none;
-		align-items: center;
-	}
+			.post-item a {
+				display: flex;
+				gap: 2rem;
+				text-decoration: none;
+				align-items: center;
+			}
 
-	.post-thumb {
-		width: 240px;
-		height: 150px;
-		object-fit: cover;
-		border-radius: 16px;
-		box-shadow: var(--box-shadow);
-		transition: transform 0.3s ease;
-	}
+			.post-thumb {
+				width: 240px;
+				height: 150px;
+				object-fit: cover;
+				border-radius: 16px;
+				box-shadow: var(--box-shadow);
+				transition: transform 0.3s ease;
+			}
 
-	.post-details {
-		flex: 1; /* נותן לטקסט לתפוס את כל השטח שנשאר */
-	}
+			.post-details {
+				flex: 1;
+			}
 
-	.title {
-		margin: 0 0 0.4rem 0;
-		color: rgb(var(--black));
-		font-size: 1.4rem;
-		font-weight: 700;
-		line-height: 1.3;
-		transition: color 0.2s ease;
-	}
+			.title {
+				margin: 0 0 0.4rem 0;
+				color: rgb(var(--black));
+				font-size: 1.4rem;
+				font-weight: 700;
+				line-height: 1.3;
+				transition: color 0.2s ease;
+			}
 
-	.date {
-		margin: 0 0 0.5rem 0;
-		color: rgb(var(--gray));
-		font-size: 0.9rem;
-	}
+			.date {
+				margin: 0 0 0.5rem 0;
+				color: rgb(var(--gray));
+				font-size: 0.9rem;
+			}
 
-	.description {
-		margin: 0;
-		color: rgb(var(--gray-dark));
-		font-size: 1rem;
-		line-height: 1.5;
-	}
+			.description {
+				margin: 0;
+				color: rgb(var(--gray-dark));
+				font-size: 1rem;
+				line-height: 1.5;
+			}
 
-	/* אפקטים במעבר עכבר */
-	ul li a:hover .title {
-		color: rgb(var(--black));
-		text-decoration: underline; /* או צבע האפקט המועדף עליך */
-	}
+			ul li a:hover .title {
+				color: rgb(var(--black));
+				text-decoration: underline;
+			}
 
-	ul li a:hover .post-thumb {
-		transform: scale(1.02);
-	}
+			ul li a:hover .post-thumb {
+				transform: scale(1.02);
+			}
 
-	/* התאמה מלאה למובייל - התמונה עולה למעלה והטקסט מתחתיה */
-	@media (max-width: 720px) {
-		.post-item a {
-			flex-direction: column;
-			align-items: flex-start;
-			gap: 1.2rem;
-		}
-		.post-thumb {
-			width: 100%;
-			height: 200px;
-		}
-	}
-</style>
+			@media (max-width: 720px) {
+				.post-item a {
+					flex-direction: column;
+					align-items: flex-start;
+					gap: 1.2rem;
+				}
+				.post-thumb {
+					width: 100%;
+					height: 200px;
+				}
+			}
+		</style>
 	</head>
 	<body>
 		<Header />
 		<main>
 			<section>
-			<h1>המחשבות שלי</h1>
-			<TagsBar activeTag={typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('tag') : undefined} />
-<div class="featured-section">
-    <h2 class="section-title">קריאה נבחרת</h2>
-<ul>
-    {
-        posts.map((post) => (
-            <li class="post-item" data-tags={post.data.tags ? post.data.tags.join(',') : ''}>
-                <a href={import.meta.env.BASE_URL + 'blog/' + post.id + '/'}>
-                    {post.data.heroImage && (
-                        <Image width={360} height={180} src={post.data.heroImage} alt="" class="post-thumb" />
-                    )}
-                    <div class="post-details">
-                        <h4 class="title">{post.data.title}</h4>
-                        <p class="date">
-                            <FormattedDate date={post.data.pubDate} />
-                        </p>
-                        <p class="description">{post.data.description}</p>
-                    </div>
-                </a>
-            </li>
-        ))
-    }
-</ul>
-</div>
+				<h1>המחשבות שלי</h1>
+				<TagsBar
+					activeTag={typeof window !== "undefined"
+						? new URLSearchParams(window.location.search).get("tag")
+						: undefined}
+				/>
+				<div class="featured-section">
+					<h2 class="section-title">קריאה נבחרת</h2>
+					<ul>
+						{
+							posts.map((post) => (
+								<li
+									class="post-item"
+									data-tags={
+										post.data.tags
+											? post.data.tags.join(",")
+											: ""
+									}
+								>
+									<a
+										href={
+											import.meta.env.BASE_URL +
+											"blog/" +
+											post.id +
+											"/"
+										}
+									>
+										{post.data.heroImage && (
+											<Image
+												width={360}
+												height={180}
+												src={post.data.heroImage}
+												alt=""
+												class="post-thumb"
+											/>
+										)}
+										<div class="post-details">
+											<h4 class="title">
+												{post.data.title}
+											</h4>
+											<p class="date">
+												<FormattedDate
+													date={post.data.pubDate}
+												/>
+											</p>
+											<p class="description">
+												{post.data.description}
+											</p>
+										</div>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
 			</section>
 		</main>
 		<Footer />
 
-		{/* קוד ה-JavaScript שמבצע את הסינון הדינמי והצביעה של הכפתורים על המסך */}
+		{
+		}
 		<script>
 			function filterPosts() {
 				const urlParams = new URLSearchParams(window.location.search);
-				const activeTag = urlParams.get('tag');
-				
-				// 1. סינון הפוסטים ויזואלית
-				const postElements = document.querySelectorAll('main ul li');
+				const activeTag = urlParams.get("tag");
+
+				const postElements = document.querySelectorAll("main ul li");
 				postElements.forEach((el) => {
-					const tagsAttr = el.getAttribute('data-tags') || '';
-					const postTags = tagsAttr.split(',').filter(Boolean);
-					
+					const tagsAttr = el.getAttribute("data-tags") || "";
+					const postTags = tagsAttr.split(",").filter(Boolean);
+
 					if (!activeTag || postTags.includes(activeTag)) {
-						(el as HTMLElement).style.display = 'block';
+						(el as HTMLElement).style.display = "block";
 					} else {
-						(el as HTMLElement).style.display = 'none';
+						(el as HTMLElement).style.display = "none";
 					}
 				});
 
-				// 2. עדכון צביעת הכפתורים (Active State)
-				const tagButtons = document.querySelectorAll('.tag-button');
+				const tagButtons = document.querySelectorAll(".tag-button");
 				tagButtons.forEach((btn) => {
-					const href = btn.getAttribute('href') || '';
-					
-					if (!activeTag && (href === '.' || href === '/blog/')) {
-						btn.classList.add('active');
-					} else if (activeTag && href.includes(`tag=${encodeURIComponent(activeTag)}`)) {
-						btn.classList.add('active');
+					const href = btn.getAttribute("href") || "";
+
+					if (!activeTag && (href === "." || href === "/blog/")) {
+						btn.classList.add("active");
+					} else if (
+						activeTag &&
+						href.includes(`tag=${encodeURIComponent(activeTag)}`)
+					) {
+						btn.classList.add("active");
 					} else {
-						btn.classList.remove('active');
+						btn.classList.remove("active");
 					}
 				});
 			}
 
-			// הפעלת הסינון כשהדף נטען
 			filterPosts();
-			
-			// האזנה לאירועים למקרה שהניווט משתנה ללא רענון מלא (תמיכה ב-Astro View Transitions)
-			document.addEventListener('astro:after-swap', filterPosts);
+
+			document.addEventListener("astro:after-swap", filterPosts);
 		</script>
 	</body>
 </html>

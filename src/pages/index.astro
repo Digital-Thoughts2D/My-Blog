@@ -9,7 +9,7 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 
 const featuredPosts = (await getCollection("blog"))
 	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 2);
+	.slice(0, 1);
 ---
 
 <!doctype html>
@@ -88,29 +88,36 @@ const featuredPosts = (await getCollection("blog"))
 				text-decoration: none;
 			}
 
-			.image-wrapper {
-				width: 100%;
-				aspect-ratio: 16 / 10;
+.image-wrapper {
+				width: 80%;
+				height: 120; 
 				overflow: hidden;
 				border-radius: 20px;
-				margin-bottom: 1rem;
-				background-color: rgb(var(--gray-light));
+				/* background-color: rgb(var(--gray-light)); */
 			}
 
 			.post-card img {
 				width: 100%;
 				height: 100%;
-				object-fit: cover;
-				transition: transform 0.5s ease;
+				object-fit: cover; 
+				
+				/* transition: transform 0.5s ease; */
 			}
-
 			.post-title {
-				margin: 0 0 0.4rem 0;
+				margin: 0.5rem 0 0.3rem 0;
 				color: rgb(var(--black));
 				font-size: 1.25rem;
 				font-weight: 700;
 				line-height: 1.3;
 				transition: color 0.3s ease;
+			}
+
+			.post-description {
+				margin: 0 0 0.3rem 0;
+				font-size: 0.95rem;
+				line-height: 1.4;
+				color: rgb(var(--gray-dark));
+				font-weight: 400;
 			}
 
 			.post-date {
@@ -121,25 +128,26 @@ const featuredPosts = (await getCollection("blog"))
 
 			.post-card a:hover .post-title {
 				color: var(--accent);
+				text-decoration: underline;
 			}
 
 			.post-card a:hover img {
-				transform: scale(1.03);
+				transform: scale(1); 
 			}
 
 			@media (max-width: 768px) {
 				main {
-					padding: 2.5rem 1.25rem;
+					padding: 1rem 0.25rem;
 				}
 				h1 {
-					font-size: 2rem;
+					font-size: 1rem;
 				}
 				p {
 					font-size: 1.05rem;
 				}
 				.posts-grid {
 					grid-template-columns: 1fr;
-					gap: 2rem;
+					gap: 1rem;
 				}
 				.animation-container-wrapper {
 					height: 200px;
@@ -205,37 +213,40 @@ const featuredPosts = (await getCollection("blog"))
 
 				<ul class="posts-grid">
 					{
-						featuredPosts.map((post) => (
-							<li class="post-card">
-								<a
-									href={`${import.meta.env.BASE_URL}blog/${post.id}/`}
-								>
-									{post.data.heroImage && (
-										<div class="image-wrapper">
-											<Image
-												width={720}
-												height={450}
-												src={post.data.heroImage}
-												alt=""
+						featuredPosts.map((post) => {
+							const displayImage =
+								post.data.featuredImage || post.data.heroImage;
+
+							return (
+								<li class="post-card">
+									<a
+										href={`${import.meta.env.BASE_URL}blog/${post.id}/`}
+									>
+										<h3 class="post-title">
+											{post.data.title}
+										</h3>
+										<p class="post-description">
+											{post.data.description}
+										</p>
+																				{displayImage && (
+											<div class="image-wrapper">
+												<Image
+													width={720}
+													height={450}
+													src={displayImage}
+													alt=""
+												/>
+											</div>
+										)}
+										{/* <p class="post-date">
+											<FormattedDate
+												date={post.data.pubDate}
 											/>
-										</div>
-									)}
-									<h3 class="post-title">
-										{post.data.title}
-									</h3>
-
-									<p class="post-description">
-										{post.data.description}
-									</p>
-
-									<p class="post-date">
-										<FormattedDate
-											date={post.data.pubDate}
-										/>
-									</p>
-								</a>
-							</li>
-						))
+										</p> */}
+									</a>
+								</li>
+							);
+						})
 					}
 				</ul>
 			</div>
