@@ -131,7 +131,6 @@ const posts = (await getCollection('blog')).sort(
 <ul>
     {
         posts.map((post) => (
-            /* התיקון הקריטי: הוספת המאפיין data-tags שממיר את מערך התגיות לטקסט מופרד בפסיקים */
             <li class="post-item" data-tags={post.data.tags ? post.data.tags.join(',') : ''}>
                 <a href={import.meta.env.BASE_URL + 'blog/' + post.id + '/'}>
                     {post.data.heroImage && (

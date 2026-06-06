@@ -43,20 +43,19 @@ const featuredPosts = (await getCollection("blog"))
 				text-align: justify;
 			}
 
-			
 			.animation-container-wrapper {
 				width: 100%;
 				display: flex;
 				justify-content: center;
 				align-items: flex-end;
 				margin: 0 auto;
-				height: 150px; 
+				height: 150px;
 				overflow: hidden;
 			}
 
 			#lottie-animation {
-				width: 400px;  
-				height: 400px; 
+				width: 400px;
+				height: 400px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -167,11 +166,11 @@ const featuredPosts = (await getCollection("blog"))
 			<p>
 				הקמתי את הבלוג הזה כי אני לא נוהגת לשתף אנשים במה שקורה איתי או
 				בדעות שלי.<br />
-				תמיד הייתי יותר "הטיפוס המקשיב". והאמת, אני שמחה להיות כזאת וזה לא
+				תמיד הייתי יותר "הטיפוס המקשיב". והאמת, זאת ברכה להיות כזאת וזה לא
 				משהו שהייתי רוצה לשנות בעצמי.<br />
 				אני לא מפחדת להביע את עצמי בפני אנשים או בפני האינטרנט, אבל אתם יודעים,
-				כל פלטפורמה והנושא שלה. באתר שלי יש לי את החופש לדבר ולשתף את מה
-				שאני רוצה מתי שאני רוצה.
+				כל פלטפורמה והנושא שלה. באתר שלי יש לי את החופש לדבר ולשתף את מה שאני
+				רוצה מתי שאני רוצה.
 			</p>
 
 			<p>
@@ -179,7 +178,8 @@ const featuredPosts = (await getCollection("blog"))
 				והמחשבות שלהם עם העולם אבל לא תמיד מוצאים דרך להתבטא או את
 				הטיימניג המתאים לכך. בגלל שעשיתי תואר במדעי המחשב אני לא מפחדת
 				להתעסק בעניינים הטכניים כמו הקמת פלטפורמה משלי ותחזוקת אתר, משהו
-				שלדעתי המון אנשים נמנעים ממנו בגלל הפחד להתעסק עם העניינים האלה.<br />
+				שלדעתי המון אנשים נמנעים ממנו בגלל הפחד להתעסק עם העניינים האלה.<br
+				/>
 				ביחד עם החוש היצירתי שלי אני מקבלת הנאה מהקמת אתר, העיצוב, התכנון
 				והכתיבה.<br />
 				לפחות משהו טוב יוצא לי מהתואר הזה.
@@ -195,11 +195,11 @@ const featuredPosts = (await getCollection("blog"))
 				במסגרת הבלוג הזה אני מפרטת בלשונית
 				<a href={import.meta.env.BASE_URL + "about/"}>אודות</a> כאן באתר.
 			</p>
-			
+
 			<div class="animation-container-wrapper">
 				<div id="lottie-animation"></div>
 			</div>
-			
+
 			<div class="featured-section">
 				<h2 class="section-title">קריאה נבחרת</h2>
 
@@ -207,7 +207,9 @@ const featuredPosts = (await getCollection("blog"))
 					{
 						featuredPosts.map((post) => (
 							<li class="post-card">
-								<a href={`${import.meta.env.BASE_URL}blog/${post.id}/`}>
+								<a
+									href={`${import.meta.env.BASE_URL}blog/${post.id}/`}
+								>
 									{post.data.heroImage && (
 										<div class="image-wrapper">
 											<Image
@@ -218,9 +220,18 @@ const featuredPosts = (await getCollection("blog"))
 											/>
 										</div>
 									)}
-									<h3 class="post-title">{post.data.title}</h3>
+									<h3 class="post-title">
+										{post.data.title}
+									</h3>
+
+									<p class="post-description">
+										{post.data.description}
+									</p>
+
 									<p class="post-date">
-										<FormattedDate date={post.data.pubDate} />
+										<FormattedDate
+											date={post.data.pubDate}
+										/>
 									</p>
 								</a>
 							</li>
@@ -232,25 +243,28 @@ const featuredPosts = (await getCollection("blog"))
 
 		<Footer />
 
-		<script type="module" define:vars={{ baseUrl: import.meta.env.BASE_URL }}>
+		<script
+			type="module"
+			define:vars={{ baseUrl: import.meta.env.BASE_URL }}
+		>
 			import lottie from "https://cdn.skypack.dev/lottie-web";
 
 			function initAnimation() {
 				const container = document.getElementById("lottie-animation");
 
 				if (container) {
-					container.innerHTML = '';
-					
+					container.innerHTML = "";
+
 					lottie.loadAnimation({
 						container: container,
 						renderer: "svg",
 						loop: true,
 						autoplay: true,
-						path: `${baseUrl}animations/cat.json`, 
+						path: `${baseUrl}animations/cat.json`,
 						rendererSettings: {
 							preserveAspectRatio: "xMidYMid slice",
-							hideOnTransparentBlur: true
-						}
+							hideOnTransparentBlur: true,
+						},
 					});
 				}
 			}
