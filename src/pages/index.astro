@@ -88,19 +88,20 @@ const featuredPosts = (await getCollection("blog"))
 				text-decoration: none;
 			}
 
-.image-wrapper {
-				width: 80%;
-				height: 120; 
+			.image-wrapper {
+				width: 100%; /* שינינו ל-100% כדי שיסתדר עם הגריד */
+				height: 190px; /* הוספת px כדי שהדפדפן יזהה את הגובה במחשב */
 				overflow: hidden;
 				border-radius: 20px;
-				/* background-color: rgb(var(--gray-light)); */
+				background-color: rgb(var(--gray-light));
+				margin-top: 0.8rem; /* מרווח קטן בין התיאור לתמונה */
 			}
 
 			.post-card img {
 				width: 100%;
 				height: 100%;
-				object-fit: cover; 
-				
+				object-fit: cover;
+
 				/* transition: transform 0.5s ease; */
 			}
 			.post-title {
@@ -132,29 +133,40 @@ const featuredPosts = (await getCollection("blog"))
 			}
 
 			.post-card a:hover img {
-				transform: scale(1); 
+				transform: scale(1);
 			}
 
 			@media (max-width: 768px) {
 				main {
-					padding: 1rem 0.25rem;
+					/* משאיר מרווח צידי נעים ואסתטי של 1.5rem מהצדדים של הסמארטפון */
+					padding: 2.5rem 1.5rem;
 				}
 				h1 {
-					font-size: 1rem;
+					/* מגדיל את הכותרת הראשית בנייד שתהיה נוכחת ומרשימה */
+					font-size: 1.85rem;
 				}
 				p {
+					/* התאמה עדינה של הטקסט הרגיל לנייד */
 					font-size: 1.05rem;
+					line-height: 1.65;
 				}
 				.posts-grid {
 					grid-template-columns: 1fr;
-					gap: 1rem;
+					gap: 1.5rem;
 				}
+
+				/* התאמת גודל התמונה שתתפרס יפה בנייד */
+				.image-wrapper {
+					width: 100%;
+					height: 160px;
+				}
+
 				.animation-container-wrapper {
-					height: 200px;
+					height: 160px;
 				}
 				#lottie-animation {
-					width: 300px;
-					height: 300px;
+					width: 260px;
+					height: 260px;
 				}
 			}
 		</style>
@@ -228,7 +240,7 @@ const featuredPosts = (await getCollection("blog"))
 										<p class="post-description">
 											{post.data.description}
 										</p>
-																				{displayImage && (
+										{displayImage && (
 											<div class="image-wrapper">
 												<Image
 													width={720}
@@ -239,10 +251,10 @@ const featuredPosts = (await getCollection("blog"))
 											</div>
 										)}
 										{/* <p class="post-date">
-											<FormattedDate
-												date={post.data.pubDate}
-											/>
-										</p> */}
+																					<FormattedDate
+																																	date={post.data.pubDate}
+																																												/>
+																																																						</p> */}
 									</a>
 								</li>
 							);
