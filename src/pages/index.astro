@@ -54,15 +54,15 @@ const featuredPosts = (await getCollection("blog"))
 			}
 
 			#lottie-animation {
-				width: 400px;
-				height: 400px;
+				width: 120px;
+				height: 120px;
 				display: flex;
 				align-items: center;
 				justify-content: center;
 			}
 
 			.featured-section {
-				border-top: 1px solid rgba(var(--black), 0.08);
+				border-top: 2px solid rgba(var(--black), 0.08);
 				padding-top: 3rem;
 			}
 
@@ -280,7 +280,7 @@ const featuredPosts = (await getCollection("blog"))
 						renderer: "svg",
 						loop: true,
 						autoplay: true,
-						path: `${baseUrl}animations/cat.json`,
+						path: `${baseUrl}animations/blackCat.json`,
 						rendererSettings: {
 							preserveAspectRatio: "xMidYMid slice",
 							hideOnTransparentBlur: true,
