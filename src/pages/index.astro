@@ -7,9 +7,12 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 
-const featuredPosts = (await getCollection("blog"))
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 3);
+const allPosts = (await getCollection("blog"))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const featuredPosts = allPosts.slice(3, 6);
+
+const recentPosts = allPosts.slice(0, 3);
 ---
 
 <!doctype html>
@@ -25,7 +28,6 @@ const featuredPosts = (await getCollection("blog"))
 				padding: 4rem 1.5rem;
 				box-sizing: border-box;
 			}
-
 			h1 {
 				font-size: 2.5rem;
 				font-weight: 800;
@@ -33,6 +35,16 @@ const featuredPosts = (await getCollection("blog"))
 				margin-bottom: 2rem;
 				letter-spacing: -0.02em;
 				text-align: right;
+
+				display: inline;
+				background: linear-gradient(
+					180deg,
+					transparent 55%,
+					rgba(191, 163, 218, 0.7) 55%
+				);
+				padding: 0 4px;
+				box-decoration-break: clone;
+				-webkit-box-decoration-break: clone;
 			}
 
 			p {
@@ -75,8 +87,8 @@ const featuredPosts = (await getCollection("blog"))
 
 			.posts-grid {
 				display: grid;
-				grid-template-columns: repeat(2, 1fr);
-				gap: 2.5rem;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1.5rem;
 				list-style-type: none;
 				padding: 0;
 				margin: 0;
@@ -88,13 +100,13 @@ const featuredPosts = (await getCollection("blog"))
 				text-decoration: none;
 			}
 			.image-wrapper {
-				width: 70%;
+				width: 80%;
 				height: 170px;
 				overflow: hidden;
 				border-radius: 20px;
 				margin-top: 0.8rem;
 
-				background-color: rgba(var(--gray-light), 0.0);
+				background-color: rgba(var(--gray-light), 0);
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -137,6 +149,12 @@ const featuredPosts = (await getCollection("blog"))
 				transform: scale(1);
 			}
 
+			.recent-section {
+				border-top: 2px solid rgba(var(--black), 0.08);
+				padding-top: 3rem;
+				margin-top: 3rem;
+			}
+
 			@media (max-width: 768px) {
 				main {
 					padding: 2.5rem 1.5rem;
@@ -162,8 +180,8 @@ const featuredPosts = (await getCollection("blog"))
 					height: 160px;
 				}
 				#lottie-animation {
-					width: 160px;
-					height: 160px;
+					width: 140px;
+					height: 140px;
 				}
 			}
 		</style>
@@ -173,18 +191,19 @@ const featuredPosts = (await getCollection("blog"))
 		<Header />
 
 		<main>
-			<h1>שלום לכל המבקרים</h1>
+			<div>
+				<h1>שלום לכל המבקרים</h1>
+			</div>
 
 			<p>
-				זה הבלוג שלי, הבלוג של ליזה. אני מתכוונת לשתף כאן את המחשבות,
+				ברוכת וברוכים הבאים לבלוג שלי! אני מתכוונת לשתף כאן את המחשבות,
 				האמונות והתובנות שלי.
 			</p>
 
 			<p>
 				הקמתי את הבלוג הזה כי אני לא נוהגת לשתף אנשים במה שקורה איתי או
-				בדעות שלי. אבל הבנתי שיש לי קול ואת הקול הזה אני רוצה שישמעו.<br />
-				תמיד הייתי יותר "הטיפוס המקשיב". והאמת, אני מעריכה שזאת ברכה להיות
-				כזאת וזה לא משהו שהייתי רוצה לשנות בעצמי.<br />
+				בדעות שלי. אבל הבנתי שיש לי קול ואת הקול הזה אני רוצה שישמעו.<br
+				/>
 				אני לא מפחדת להביע את עצמי בפני אנשים ובטח שלא בפני האינטרנט. אבל
 				אתם יודעים, כל פלטפורמה והנושא שלה. באתר שלי יש לי את החופש לדבר ולשתף
 				את מה שאני רוצה מתי שאני רוצה ובאיזה אורך חפירה שאני רוצה.
@@ -210,7 +229,7 @@ const featuredPosts = (await getCollection("blog"))
 				שימוש בכלי בינה מלאכותית לכתיבת תוכן הבלוג. הטקסטים שתראו על
 				המסך הם האני שלי, הכי אותנטיים. את השימוש הטכני שלי בכלי בינה
 				מלאכותית במסגרת הבלוג הזה אני מפרטת בלשונית
-				<a href={import.meta.env.BASE_URL + "about/"}>אודות</a> כאן באתר.
+				<a href={import.meta.env.BASE_URL + "about/"}>על הבלוג</a> כאן באתר.
 			</p>
 
 			<div class="animation-container-wrapper">
@@ -259,6 +278,47 @@ const featuredPosts = (await getCollection("blog"))
 					}
 				</ul>
 			</div>
+
+            <div class="recent-section">
+                <h2 class="section-title">פוסטים אחרונים</h2>
+
+                <ul class="posts-grid">
+                    {
+                        recentPosts.map((post) => {
+                            const displayImage =
+                                post.data.featuredImage || post.data.heroImage;
+
+                            return (
+                                <li class="post-card">
+                                    <a
+                                        href={`${import.meta.env.BASE_URL}blog/${post.id}/`}
+                                    >
+                                        <h3 class="post-title">
+                                            {post.data.title}
+                                        </h3>
+                                        <p class="post-description">
+                                            {post.data.description}
+                                        </p>
+                                        {displayImage && (
+                                            <div class="image-wrapper">
+                                                <Image
+                                                    width={720}
+                                                    height={450}
+                                                    src={displayImage}
+                                                    alt=""
+                                                />
+                                            </div>
+                                        )}
+                                        <p class="post-date">
+                                            <FormattedDate date={post.data.pubDate} />
+                                        </p> 
+                                    </a>
+                                </li>
+                            );
+                        })
+                    }
+                </ul>
+            </div>
 		</main>
 
 		<Footer />
