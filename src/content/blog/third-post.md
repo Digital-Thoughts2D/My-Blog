@@ -5,7 +5,7 @@ pubDate: 'Jun 10 2026'
 # heroImage: '../../assets/blog-placeholder-2.jpg'
 featuredImage: '../../assets/guy-in-corner-of-party.jpg'
 tags: ["אינפורמציה", "התפתחות אישית"]
-featured: true
+featured: false
 ---
 
 את [הפוסט הראשון](https://digital-thoughts2d.github.io/My-Blog/blog/first-post/) חתמתי באמירה אופטימית.
